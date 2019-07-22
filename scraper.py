@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import xlwt
 import openpyxl
 from openpyxl import load_workbook
 
@@ -26,15 +25,17 @@ def initWorkbook(book):
     RecipeBookSheet.cell(row=1, column=1).value = 'Recipe_ID'
     RecipeBookSheet.cell(row=1, column=2).value = 'MethodStep'
 
-
+# Gives a header to the agent so it can view site
 ua = {"User-Agent":"Mozilla/5.0"}
 url = input ("Enter URL: ")
 
+# Sets some other variables, including a default for Recipe ID
 r = requests.get(url, headers=ua)
-
 soup = BeautifulSoup(r.content, 'html.parser')
 recipeid = 11111
 
+# If there's not an existing Recipebook, creates one 
+# Otherwise, gets the last known RecipeID
 try:
     RecipeBook = load_workbook(filename= 'test.xlsx')
     RecipeBookSheet = RecipeBook['Recipe']
@@ -43,13 +44,6 @@ except:
     RecipeBook = openpyxl.Workbook()
     initWorkbook(RecipeBook)
 
-# Sets numbering style to number
-#number = xlwt.XFStyle()
-#number.num_format_str = '0'
-
-# Creates workbook and initiates
-#RecipeBook = xlwt.Workbook()
-#initWorkbook(RecipeBook)
 
 # Assigns active sheet to Recipe
 RecipeBookSheet = RecipeBook['Recipe']
